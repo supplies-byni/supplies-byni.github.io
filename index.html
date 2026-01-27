@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Supplies Before It’s Too Late</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Comic Neue", cursive;
+  background: #f4f6f8;
+  color: #333;
+}
+
+/* NAV BAR */
+nav {
+  background: #1565c0;
+  padding: 12px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #1e88e5, #42a5f5);
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+section {
+  padding: 60px 10%;
+}
+
+h2 {
+  color: #1e88e5;
+}
+
+/* PRODUCTS */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+}
+
+button {
+  background: #1e88e5;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #1565c0;
+}
+
+/* CHECKOUT */
+.checkout {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+.cart-item {
+  margin: 5px 0;
+}
+
+.empty-cart {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.donation-box {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f0f4ff;
+  border-radius: 12px;
+}
+
+.receipt-option {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ABOUT */
+.about {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  line-height: 1.6;
+}
+
+/* PRICE COMPARE TABLE */
+#price-compare table {
+  width:100%;
+  border-collapse: collapse;
+}
+
+#price-compare table tr:nth-child(even) {
+  background: #f4f6f8;
+}
+
+#price-compare table th, 
+#price-compare table td {
+  text-align: center;
+  font-weight: normal;
+  font-size: 1rem;
+  padding:10px;
+  border:1px solid #ccc;
+}
+
+/* FOOTER */
+footer {
+  background: #e0e0e0;
+  text-align: center;
+  padding: 15px;
+  font-style: italic;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="#products">Products</a>
+  <a href="#checkout">Checkout</a>
+  <a href="#about">About Us</a>
+  <a href="#price-compare">Price Compare</a>
+</nav>
+
+<header>
+  <h1>Supplies Before It’s Too Late</h1>
+  <p><em>Get supplies before you need them</em></p>
+</header>
+
+<section id="products">
+  <h2>Products</h2>
+  <div class="products">
+    <div class="card">
+      <h3>Single Pencil</h3>
+      <p>$0.25</p>
+      <button onclick="addToCart('Single Pencil', 0.25)">Add</button>
+    </div>
+    <div class="card">
+      <h3>Pencil Pack (5 Pencils)</h3>
+      <p>$1.00</p>
+      <button onclick="addToCart('Pencil Pack (5)', 1.00)">Add</button>
+    </div>
+    <div class="card">
+      <h3>Single Eraser (! May Be 2 Half Erasers ! )</h3>
+      <p>$0.35</p>
+      <button onclick="addToCart('Single Eraser', 0.30)">Add</button>
+    </div>
+    <div class="card">
+      <h3>Deluxe Pack (10 Pencils + 2 HalfErasers)</h3>
+      <p>$2.75</p>
+      <button onclick="addToCart('Deluxe Pack', 2.75)">Add</button>
+    </div>
+  </div>
+</section>
+
+<section id="checkout">
+  <h2>Checkout</h2>
+  <div class="checkout">
+    <div id="cart" class="empty-cart">Your cart is empty</div>
+
+    <input id="name" placeholder="Your Name">
+    <input id="address" placeholder="Address">
+    <input id="discount" placeholder="Discount Code">
+
+    <div class="donation-box">
+      <strong>Optional Donation 💙</strong><br>
+      <input type="range" min="0" max="50" step="0.25" value="0" id="donation">
+      <div>Donation: $<span id="donationAmount">0.00</span></div>
+    </div>
+
+    <div class="receipt-option">
+      <label>
+        <input type="checkbox" id="emailReceipt">
+        Email me a receipt
+      </label>
+    </div>
+
+    <div class="total" id="total">$0.00</div>
+
+    <button onclick="checkout()">Place Order</button>
+  </div>
+</section>
+
+<section id="about">
+  <h2>About Us</h2>
+  <div class="about">
+    <p>
+      I created Supplies Before It’s Too Late because I never went to class
+      prepared. I had to go to my locker multiple times a day to get pencils,
+      erasers, and other supplies. But now instead of me forgetting supplies, I
+      want to help others be prepared. Every student
+      should have access to simple school supplies without stress This may seem
+      like a silly idea but it can make a big difference.
+    </p>
+
+    <p>
+      Use code Student2026 for 25% off.
+    </p>
+  </div>
+</section>
+
+<section id="price-compare">
+  <h2>Price Comparison</h2>
+  <div class="about">
+    <table>
+      <tr style="background:#1565c0; color:white;">
+        <th>Item</th>
+        <th>Our Price</th>
+        <th>Normal Price</th>
+        <th>You Save</th>
+      </tr>
+      <tr>
+        <td>Single Pencil</td>
+        <td>$0.25</td>
+        <td>$0.30</td>
+        <td>17%</td>
+      </tr>
+      <tr>
+        <td>5 Pencil Pack</td>
+        <td>$1.00</td>
+        <td>$1.25</td>
+        <td>20%</td>
+      </tr>
+      <tr>
+        <td>2 Half Erasers</td>
+        <td>$0.40</td>
+        <td>$0.45</td>
+        <td>11%</td>
+      </tr>
+      <tr>
+        <td>Deluxe Pack (10 Pencils + 2 Half Erasers)</td>
+        <td>$2.75</td>
+        <td>$3.00</td>
+        <td>8%</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  Made by Roman Wilson ; CEO
+</footer>
+
+<script>
+const webhookURL = "https://discord.com/api/webhooks/1465496912974315694/SVKa3SxLA-o4sZbddUsWIS-6udSkopEIgd5t3XS7azC0pd5xPze8Bbhf_Jbp6IkWt-Z2";
+
+const discounts = {
+  "FAMILY$OFF": 1.00,
+  "Student2026": 0.25,
+};
+
+let cart = [];
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+function renderCart() {
+  const cartDiv = document.getElementById("cart");
+
+  if (cart.length === 0) {
+    cartDiv.innerHTML = "Your cart is empty";
+    cartDiv.classList.add("empty-cart");
+  } else {
+    cartDiv.classList.remove("empty-cart");
+    cartDiv.innerHTML = "<strong>Cart:</strong><br>";
+  }
+
+  let subtotal = 0;
+  cart.forEach(item => {
+    subtotal += item.price;
+    cartDiv.innerHTML += `<div class="cart-item">${item.name} - $${item.price.toFixed(2)}</div>`;
+  });
+
+  const code = document.getElementById("discount").value.trim();
+  if (discounts[code]) subtotal *= (1 - discounts[code]);
+
+  const donation = parseFloat(document.getElementById("donation").value);
+  document.getElementById("donationAmount").innerText = donation.toFixed(2);
+
+  const total = subtotal + donation;
+  document.getElementById("total").innerText = "$" + total.toFixed(2);
+}
+
+document.getElementById("discount").addEventListener("input", renderCart);
+document.getElementById("donation").addEventListener("input", renderCart);
+
+function sendMailReceipt(name, address, items, total) {
+  const subject = encodeURIComponent("Your Receipt - Supplies Before It’s Too Late");
+  const body = encodeURIComponent(
+`Thanks for your order!
+
+Name: ${name}
+Address: ${address}
+
+Items:
+${items}
+
+Total Paid: ${total}`
+  );
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+function checkout() {
+  if (cart.length === 0) { alert("Cart is empty"); return; }
+
+  const name = document.getElementById("name").value;
+  const address = document.getElementById("address").value;
+  const donation = document.getElementById("donation").value;
+  const items = cart.map(i => `${i.name} ($${i.price})`).join(", ");
+  const total = document.getElementById("total").innerText;
+
+  fetch(webhookURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      content:
+`🛒 New Order
+👤 Name: ${name}
+🏠 Address: ${address}
+📦 Items: ${items}
+💙 Donation: $${donation}
+💰 Total: ${total}`
+    })
+  });
+
+  if (document.getElementById("emailReceipt").checked) {
+    sendMailReceipt(name, address, items, total);
+  }
+
+  alert("Order sent!");
+  cart = [];
+  document.getElementById("donation").value = 0;
+  document.getElementById("emailReceipt").checked = false;
+  renderCart();
+}
+</script>
+
+</body>
+</html>
