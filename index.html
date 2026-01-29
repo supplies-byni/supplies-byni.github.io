@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Supplies Before You Need It</title>
+<title>Supplies Before It’s Too Late</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
@@ -45,6 +45,19 @@ header {
   color: white;
   padding: 40px;
   text-align: center;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.logo img {
+  height: 60px;
+  width: auto;
 }
 
 section {
@@ -186,7 +199,10 @@ footer {
 </nav>
 
 <header>
-  <h1>Supplies Before You Need Them</h1>
+  <div class="logo">
+    <img src="logo.png" alt="Supplies Logo">
+    <h1>Supplies Before It’s Too Late</h1>
+  </div>
   <p><em>Get supplies before you need them</em></p>
 </header>
 
@@ -204,12 +220,12 @@ footer {
       <button onclick="addToCart('Pencil Pack (5)', 1.00)">Add</button>
     </div>
     <div class="card">
-      <h3>Single Eraser (! May Be 2 Half Erasers ! )</h3>
+      <h3>Single Eraser (! May Be 2 Half Erasers !)</h3>
       <p>$0.35</p>
       <button onclick="addToCart('Single Eraser', 0.30)">Add</button>
     </div>
     <div class="card">
-      <h3>Deluxe Pack (10 Pencils + 2 HalfErasers)</h3>
+      <h3>Deluxe Pack (10 Pencils + 2 Half Erasers)</h3>
       <p>$2.75</p>
       <button onclick="addToCart('Deluxe Pack', 2.75)">Add</button>
     </div>
@@ -251,14 +267,9 @@ footer {
       I created Supplies Before It’s Too Late because I never went to class
       prepared. I had to go to my locker multiple times a day to get pencils,
       erasers, and other supplies. But now instead of me forgetting supplies, I
-      want to help others be prepared. Every student
-      should have access to simple school supplies without stress This may seem
-      like a silly idea but it can make a big difference.
+      want to help others be prepared.
     </p>
-
-    <p>
-      Use code Student2026 for 25% off.
-    </p>
+    <p>Use code Student2026 for 25% off.</p>
   </div>
 </section>
 
@@ -291,7 +302,7 @@ footer {
         <td>11%</td>
       </tr>
       <tr>
-        <td>Deluxe Pack (10 Pencils + 2 Half Erasers)</td>
+        <td>Deluxe Pack</td>
         <td>$2.75</td>
         <td>$3.00</td>
         <td>8%</td>
@@ -366,7 +377,10 @@ Total Paid: ${total}`
 }
 
 function checkout() {
-  if (cart.length === 0) { alert("Cart is empty"); return; }
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
 
   const name = document.getElementById("name").value;
   const address = document.getElementById("address").value;
