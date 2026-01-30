@@ -7,9 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -35,10 +33,6 @@ nav a {
   font-weight: bold;
 }
 
-nav a:hover {
-  text-decoration: underline;
-}
-
 /* HEADER */
 header {
   background: linear-gradient(135deg, #1e88e5, #42a5f5);
@@ -47,7 +41,6 @@ header {
   text-align: center;
 }
 
-/* LOGO */
 .logo {
   display: flex;
   align-items: center;
@@ -55,18 +48,11 @@ header {
   gap: 15px;
 }
 
-.logo img {
-  height: 60px;
-  width: auto;
-}
+.logo img { height: 60px; }
 
-section {
-  padding: 60px 10%;
-}
+section { padding: 60px 10%; }
 
-h2 {
-  color: #1e88e5;
-}
+h2 { color: #1e88e5; }
 
 /* PRODUCTS */
 .products {
@@ -80,12 +66,6 @@ h2 {
   padding: 20px;
   border-radius: 18px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  transition: transform 0.25s, box-shadow 0.25s;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 25px rgba(0,0,0,0.15);
 }
 
 button {
@@ -96,10 +76,6 @@ button {
   border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
-}
-
-button:hover {
-  background: #1565c0;
 }
 
 /* CHECKOUT */
@@ -118,13 +94,9 @@ input {
   border: 1px solid #ccc;
 }
 
-input[type="checkbox"] {
-  width: auto;
-}
+input[type="checkbox"] { width: auto; }
 
-.cart-item {
-  margin: 5px 0;
-}
+.cart-item { margin: 5px 0; }
 
 .empty-cart {
   opacity: 0.6;
@@ -153,30 +125,22 @@ input[type="checkbox"] {
 
 /* ABOUT */
 .about {
-  background: #ffffff;
+  background: white;
   border-radius: 18px;
   padding: 30px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  line-height: 1.6;
 }
 
-/* PRICE COMPARE TABLE */
+/* PRICE COMPARE */
 #price-compare table {
   width:100%;
   border-collapse: collapse;
 }
 
-#price-compare table tr:nth-child(even) {
-  background: #f4f6f8;
-}
-
-#price-compare table th, 
-#price-compare table td {
-  text-align: center;
-  font-weight: normal;
-  font-size: 1rem;
-  padding:10px;
+#price-compare th, #price-compare td {
   border:1px solid #ccc;
+  padding:10px;
+  text-align:center;
 }
 
 /* FOOTER */
@@ -200,120 +164,93 @@ footer {
 
 <header>
   <div class="logo">
-    <img src="logo.png" alt="Supplies Logo">
+    <img src="logo.png">
     <h1>Supplies Before It’s Too Late</h1>
   </div>
-  <p><em>Get supplies before you need them</em></p>
 </header>
 
 <section id="products">
-  <h2>Products</h2>
-  <div class="products">
-    <div class="card">
-      <h3>Single Pencil</h3>
-      <p>$0.25</p>
-      <button onclick="addToCart('Single Pencil', 0.25)">Add</button>
-    </div>
-    <div class="card">
-      <h3>Pencil Pack (5 Pencils)</h3>
-      <p>$1.00</p>
-      <button onclick="addToCart('Pencil Pack (5)', 1.00)">Add</button>
-    </div>
-    <div class="card">
-      <h3>Single Eraser (! May Be 2 Half Erasers !)</h3>
-      <p>$0.35</p>
-      <button onclick="addToCart('Single Eraser', 0.30)">Add</button>
-    </div>
-    <div class="card">
-      <h3>Deluxe Pack (10 Pencils + 2 Half Erasers)</h3>
-      <p>$2.75</p>
-      <button onclick="addToCart('Deluxe Pack', 2.75)">Add</button>
-    </div>
-  </div>
+<h2>Products</h2>
+<div class="products">
+
+<div class="card">
+  <h3>Single Pencil</h3>
+  <p>$0.25</p>
+  <button onclick="addToCart('Single Pencil', 0.25)">Add</button>
+</div>
+
+<div class="card">
+  <h3>Pencil Pack (5 Pencils)</h3>
+  <p>$1.00</p>
+  <button onclick="addToCart('Pencil Pack (5)', 1.00)">Add</button>
+</div>
+
+<div class="card">
+  <h3>Single Pen (Discounted)</h3>
+  <p>$0.40 <small><s>$0.60</s></small></p>
+  <button onclick="addToCart('Single Pen', 0.40)">Add</button>
+</div>
+
+<div class="card">
+  <h3>Deluxe Pack</h3>
+  <p>$2.75</p>
+  <button onclick="addToCart('Deluxe Pack', 2.75)">Add</button>
+</div>
+
+</div>
 </section>
 
 <section id="checkout">
-  <h2>Checkout</h2>
-  <div class="checkout">
-    <div id="cart" class="empty-cart">Your cart is empty</div>
+<h2>Checkout</h2>
+<div class="checkout">
+  <div id="cart" class="empty-cart">Your cart is empty</div>
 
-    <input id="name" placeholder="Your Name">
-    <input id="address" placeholder="Address">
-    <input id="discount" placeholder="Discount Code">
+  <input id="name" placeholder="Your Name">
+  <input id="address" placeholder="Address">
+  <input id="discount" placeholder="Discount Code">
 
-    <div class="donation-box">
-      <strong>Optional Donation 💙</strong><br>
-      <input type="range" min="0" max="50" step="0.25" value="0" id="donation">
-      <div>Donation: $<span id="donationAmount">0.00</span></div>
-    </div>
-
-    <div class="receipt-option">
-      <label>
-        <input type="checkbox" id="emailReceipt">
-        Email me a receipt
-      </label>
-    </div>
-
-    <div class="total" id="total">$0.00</div>
-
-    <button onclick="checkout()">Place Order</button>
+  <div class="donation-box">
+    <strong>Optional Donation 💙</strong><br>
+    <input type="range" min="0" max="50" step="0.25" value="0" id="donation">
+    <div>Donation: $<span id="donationAmount">0.00</span></div>
   </div>
+
+  <div class="receipt-option">
+    <label>
+      <input type="checkbox" id="emailReceipt">
+      Email me a receipt
+    </label>
+  </div>
+
+  <div class="total" id="total">$0.00</div>
+  <button onclick="checkout()">Place Order</button>
+</div>
 </section>
 
 <section id="about">
-  <h2>About Us</h2>
-  <div class="about">
-    <p>
-      I created Supplies Before It’s Too Late because I never went to class
-      prepared. I had to go to my locker multiple times a day to get pencils,
-      erasers, and other supplies. But now instead of me forgetting supplies, I
-      want to help others be prepared.
-    </p>
-    <p>Use code Student2026 for 25% off.</p>
-  </div>
+<h2>About Us</h2>
+<div class="about">
+<p>Helping students stay prepared.</p>
+<p>Use code Student2026 for 25% off.</p>
+</div>
 </section>
 
 <section id="price-compare">
-  <h2>Price Comparison</h2>
-  <div class="about">
-    <table>
-      <tr style="background:#1565c0; color:white;">
-        <th>Item</th>
-        <th>Our Price</th>
-        <th>Normal Price</th>
-        <th>You Save</th>
-      </tr>
-      <tr>
-        <td>Single Pencil</td>
-        <td>$0.25</td>
-        <td>$0.30</td>
-        <td>17%</td>
-      </tr>
-      <tr>
-        <td>5 Pencil Pack</td>
-        <td>$1.00</td>
-        <td>$1.25</td>
-        <td>20%</td>
-      </tr>
-      <tr>
-        <td>2 Half Erasers</td>
-        <td>$0.40</td>
-        <td>$0.45</td>
-        <td>11%</td>
-      </tr>
-      <tr>
-        <td>Deluxe Pack</td>
-        <td>$2.75</td>
-        <td>$3.00</td>
-        <td>8%</td>
-      </tr>
-    </table>
-  </div>
+<h2>Price Comparison</h2>
+<div class="about">
+<table>
+<tr style="background:#1565c0;color:white;">
+<th>Item</th><th>Our Price</th><th>Normal Price</th><th>You Save</th>
+</tr>
+<tr><td>Single Pencil</td><td>$0.25</td><td>$0.30</td><td>17%</td></tr>
+<tr><td>5 Pencil Pack</td><td>$1.00</td><td>$1.25</td><td>20%</td></tr>
+<tr><td>Single Pen</td><td>$0.40</td><td>$0.60</td><td>33%</td></tr>
+<tr><td>Deluxe Pack</td><td>$2.75</td><td>$3.00</td><td>8%</td></tr>
+</table>
+</div>
 </section>
 
-<footer>
-  Made by Roman Wilson ; CEO
-</footer>
+<footer>Made by Roman Wilson ; CEO</footer>
 
 <script>
 const webhookURL = "https://discord.com/api/webhooks/1465496912974315694/SVKa3SxLA-o4sZbddUsWIS-6udSkopEIgd5t3XS7azC0pd5xPze8Bbhf_Jbp6IkWt-Z2";
@@ -353,8 +290,8 @@ function renderCart() {
   const donation = parseFloat(document.getElementById("donation").value);
   document.getElementById("donationAmount").innerText = donation.toFixed(2);
 
-  const total = subtotal + donation;
-  document.getElementById("total").innerText = "$" + total.toFixed(2);
+  document.getElementById("total").innerText =
+    "$" + (subtotal + donation).toFixed(2);
 }
 
 document.getElementById("discount").addEventListener("input", renderCart);
