@@ -16,7 +16,6 @@ body {
   color: #333;
 }
 
-/* NAV BAR */
 nav {
   background: #1565c0;
   padding: 12px;
@@ -33,7 +32,6 @@ nav a {
   font-weight: bold;
 }
 
-/* HEADER */
 header {
   background: linear-gradient(135deg, #1e88e5, #42a5f5);
   color: white;
@@ -41,20 +39,8 @@ header {
   text-align: center;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-}
-
-.logo img { height: 60px; }
-
 section { padding: 60px 10%; }
 
-h2 { color: #1e88e5; }
-
-/* PRODUCTS */
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -78,9 +64,13 @@ button {
   font-weight: bold;
 }
 
-/* CHECKOUT */
-.checkout {
-  background: white;
+.stock {
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.admin {
+  background: #fff;
   padding: 25px;
   border-radius: 18px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -93,63 +83,6 @@ input {
   border-radius: 10px;
   border: 1px solid #ccc;
 }
-
-input[type="checkbox"] { width: auto; }
-
-.cart-item { margin: 5px 0; }
-
-.empty-cart {
-  opacity: 0.6;
-  font-style: italic;
-}
-
-.total {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-top: 15px;
-  text-align: center;
-}
-
-.donation-box {
-  margin-top: 15px;
-  padding: 15px;
-  background: #f0f4ff;
-  border-radius: 12px;
-}
-
-.receipt-option {
-  margin-top: 15px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* ABOUT */
-.about {
-  background: white;
-  border-radius: 18px;
-  padding: 30px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-/* PRICE COMPARE */
-#price-compare table {
-  width:100%;
-  border-collapse: collapse;
-}
-
-#price-compare th, #price-compare td {
-  border:1px solid #ccc;
-  padding:10px;
-  text-align:center;
-}
-
-/* FOOTER */
-footer {
-  background: #e0e0e0;
-  text-align: center;
-  padding: 15px;
-  font-style: italic;
-}
 </style>
 </head>
 
@@ -157,207 +90,135 @@ footer {
 
 <nav>
   <a href="#products">Products</a>
+  <a href="#employee">Employee</a>
   <a href="#checkout">Checkout</a>
-  <a href="#about">About Us</a>
-  <a href="#price-compare">Price Compare</a>
 </nav>
 
 <header>
-  <div class="logo">
-    <img src="logo.png">
-    <h1>Supplies Before It’s Too Late</h1>
-  </div>
+  <h1>Supplies Before It’s Too Late</h1>
 </header>
 
 <section id="products">
 <h2>Products</h2>
-<div class="products">
 
-  <strong>5 Cents added to each item as a packaging and shipping fee. Sorry!</strong>
+<div class="products" id="productList"></div>
+</section>
 
-<div class="card">
-  <h3>Single Pencil</h3>
-  <p>$0.20</p>
-  <button onclick="addToCart('Single Pencil', 0.25)">Add</button>
-</div>
-
-<div class="card">
-  <h3>Pencil Pack (5 Pencils)</h3>
-  <p>$1.00</p>
-  <button onclick="addToCart('Pencil Pack (5)', 1.05)">Add</button>
-</div>
-
-<div class="card">
-  <h3>Single Eraser (⚠️ May be 2 half erasers ⚠️)</h3>
-  <p>$0.30</p>
-  <button onclick="addToCart('Single Eraser', 0.35)">Add</button>
-</div>
-
-<div class="card">
-  <h3>Single Pen</h3>
-  <p>$0.45<small>
-  <button onclick="addToCart('Single Pen', 0.50)">Add</button>
-</div>
-
-<div class="card">
-  <h3>Deluxe Pack (10 Pencils + 2 Half Erasers)</h3>
-  <p>$2.25</p>
-  <button onclick="addToCart('Deluxe Pack', 2.80)">Add</button>
-</div>
-
+<section id="employee">
+<h2>Employee Access 🔐</h2>
+<div class="admin">
+  <input id="employeeCode" placeholder="Enter employee code">
+  <button onclick="unlockAdmin()">Unlock</button>
+  <div id="adminPanel" style="display:none;margin-top:20px;"></div>
 </div>
 </section>
 
 <section id="checkout">
 <h2>Checkout</h2>
-<div class="checkout">
-  <div id="cart" class="empty-cart">Your cart is empty</div>
-
-  <input id="name" placeholder="Your Name">
-  <input id="address" placeholder="Address">
-  <input id="discount" placeholder="Discount Code">
-
-  <div class="donation-box">
-    <strong>Optional Donation 💙</strong><br>
-    <input type="range" min="0" max="50" step="0.25" value="0" id="donation">
-    <div>Donation: $<span id="donationAmount">0.00</span></div>
-  </div>
-
-  <div class="receipt-option">
-    <label>
-      <input type="checkbox" id="emailReceipt">
-      Email me a receipt
-    </label>
-  </div>
-
-  <div class="total" id="total">$0.00</div>
-  <button onclick="checkout()">Place Order</button>
+<div class="admin">
+  <div id="cart">Your cart is empty</div>
+  <div id="total">$0.00</div>
 </div>
 </section>
-
-<section id="about">
-<h2>About Us</h2>
-<div class="about">
-<p>I made this so we can get supplies for cheap and dont have to worry about losing 50 dollars on one mechanical pencil that came without lead 😄</p>
-<p>Use code <strong>Student2026</strong> for 25% off.</p>
-</div>
-</section>
-
-<section id="price-compare">
-<h2>Price Comparison</h2>
-<div class="about">
-<table>
-<tr style="background:#1565c0;color:white;">
-<th>Item</th><th>Our Price</th><th>Normal Price</th><th>You Save</th>
-</tr>
-<tr><td>Single Pencil</td><td>$0.20</td><td>$0.30</td><td>17%</td></tr>
-<tr><td>5 Pencil Pack</td><td>$1.00</td><td>$1.25</td><td>20%</td></tr>
-<tr><td>Single Eraser</td><td>$0.40</td><td>$0.35</td><td>14%</td></tr>
-<tr><td>Single Pen</td><td>$0.45</td><td>$0.60</td><td>33%</td></tr>
-<tr><td>Deluxe Pack</td><td>$2.25</td><td>$3.00</td><td>8%</td></tr>
-</table>
-</div>
-</section>
-
-<footer>Made by Roman Wilson ; CEO</footer>
 
 <script>
-const webhookURL = "https://discord.com/api/webhooks/1465496912974315694/SVKa3SxLA-o4sZbddUsWIS-6udSkopEIgd5t3XS7azC0pd5xPze8Bbhf_Jbp6IkWt-Z2";
+const EMPLOYEE_CODE = "Hex.Creat0r!";
 
-const discounts = {
-  "FAMILY$OFF": 1.00,
-  "Student2026": 0.25,
+const products = {
+  pencil: { name: "Single Pencil", price: 0.25, stock: 20 },
+  pack: { name: "Pencil Pack (5)", price: 1.05, stock: 10 },
+  eraser: { name: "Single Eraser", price: 0.35, stock: 15 },
+  pen: { name: "Single Pen", price: 0.50, stock: 12 },
+  deluxe: { name: "Deluxe Pack", price: 2.80, stock: 5 }
 };
 
 let cart = [];
 
-function addToCart(name, price) {
-  cart.push({ name, price });
+// Load stock from storage
+for (let key in products) {
+  const saved = localStorage.getItem("stock_" + key);
+  if (saved !== null) products[key].stock = parseInt(saved);
+}
+
+function saveStock() {
+  for (let key in products) {
+    localStorage.setItem("stock_" + key, products[key].stock);
+  }
+}
+
+function renderProducts() {
+  const list = document.getElementById("productList");
+  list.innerHTML = "";
+
+  for (let key in products) {
+    const p = products[key];
+    list.innerHTML += `
+      <div class="card">
+        <h3>${p.name}</h3>
+        <p>$${p.price.toFixed(2)}</p>
+        <div class="stock">Stock: ${p.stock}</div>
+        <button ${p.stock <= 0 ? "disabled" : ""} onclick="addToCart('${key}')">
+          ${p.stock <= 0 ? "Out of Stock" : "Add"}
+        </button>
+      </div>
+    `;
+  }
+}
+
+function addToCart(key) {
+  if (products[key].stock <= 0) return;
+  products[key].stock--;
+  cart.push(products[key]);
+  saveStock();
+  renderProducts();
   renderCart();
 }
 
 function renderCart() {
   const cartDiv = document.getElementById("cart");
-
   if (cart.length === 0) {
-    cartDiv.innerHTML = "Your cart is empty";
-    cartDiv.classList.add("empty-cart");
-  } else {
-    cartDiv.classList.remove("empty-cart");
-    cartDiv.innerHTML = "<strong>Cart:</strong><br>";
-  }
-
-  let subtotal = 0;
-  cart.forEach(item => {
-    subtotal += item.price;
-    cartDiv.innerHTML += `<div class="cart-item">${item.name} - $${item.price.toFixed(2)}</div>`;
-  });
-
-  const code = document.getElementById("discount").value.trim();
-  if (discounts[code]) subtotal *= (1 - discounts[code]);
-
-  const donation = parseFloat(document.getElementById("donation").value);
-  document.getElementById("donationAmount").innerText = donation.toFixed(2);
-
-  document.getElementById("total").innerText =
-    "$" + (subtotal + donation).toFixed(2);
-}
-
-document.getElementById("discount").addEventListener("input", renderCart);
-document.getElementById("donation").addEventListener("input", renderCart);
-
-function sendMailReceipt(name, address, items, total) {
-  const subject = encodeURIComponent("Your Receipt - Supplies Before It’s Too Late");
-  const body = encodeURIComponent(
-`Thanks for your order!
-
-Name: ${name}
-Address: ${address}
-
-Items:
-${items}
-
-Total Paid: ${total}`
-  );
-  window.location.href = `mailto:?subject=${subject}&body=${body}`;
-}
-
-function checkout() {
-  if (cart.length === 0) {
-    alert("Cart is empty");
+    cartDiv.innerText = "Your cart is empty";
+    document.getElementById("total").innerText = "$0.00";
     return;
   }
 
-  const name = document.getElementById("name").value;
-  const address = document.getElementById("address").value;
-  const donation = document.getElementById("donation").value;
-  const items = cart.map(i => `${i.name} ($${i.price})`).join(", ");
-  const total = document.getElementById("total").innerText;
-
-  fetch(webhookURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      content:
-`🛒 New Order
-👤 Name: ${name}
-🏠 Address: ${address}
-📦 Items: ${items}
-💙 Donation: $${donation}
-💰 Total: ${total}`
-    })
+  let total = 0;
+  cartDiv.innerHTML = "<strong>Cart:</strong><br>";
+  cart.forEach(i => {
+    total += i.price;
+    cartDiv.innerHTML += `${i.name} - $${i.price.toFixed(2)}<br>`;
   });
 
-  if (document.getElementById("emailReceipt").checked) {
-    sendMailReceipt(name, address, items, total);
+  document.getElementById("total").innerText = "$" + total.toFixed(2);
+}
+
+function unlockAdmin() {
+  const code = document.getElementById("employeeCode").value;
+  if (code !== EMPLOYEE_CODE) {
+    alert("Wrong code");
+    return;
   }
 
-  alert("Order sent!");
-  cart = [];
-  document.getElementById("donation").value = 0;
-  document.getElementById("emailReceipt").checked = false;
-  renderCart();
+  const panel = document.getElementById("adminPanel");
+  panel.style.display = "block";
+  panel.innerHTML = "<h3>Edit Stock</h3>";
+
+  for (let key in products) {
+    panel.innerHTML += `
+      <label>${products[key].name}</label>
+      <input type="number" value="${products[key].stock}"
+        onchange="updateStock('${key}', this.value)">
+    `;
+  }
 }
+
+function updateStock(key, value) {
+  products[key].stock = parseInt(value);
+  saveStock();
+  renderProducts();
+}
+
+renderProducts();
 </script>
 
 </body>
