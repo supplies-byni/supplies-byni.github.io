@@ -78,11 +78,6 @@ button {
   font-weight: bold;
 }
 
-.stock {
-  font-size: 0.9rem;
-  margin-top: 6px;
-}
-
 /* CHECKOUT */
 .checkout {
   background: white;
@@ -113,6 +108,19 @@ input[type="checkbox"] { width: auto; }
   font-weight: bold;
   margin-top: 15px;
   text-align: center;
+}
+
+.donation-box {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f0f4ff;
+  border-radius: 12px;
+}
+
+.receipt-option {
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* ABOUT */
@@ -149,7 +157,6 @@ footer {
 
 <nav>
   <a href="#products">Products</a>
-  <a href="#employee">Employee</a>
   <a href="#checkout">Checkout</a>
   <a href="#about">About Us</a>
   <a href="#price-compare">Price Compare</a>
@@ -166,57 +173,38 @@ footer {
 <h2>Products</h2>
 <div class="products">
 
-<strong>5 Cents added to each item as a packaging and shipping fee. Sorry!</strong>
+  <strong>5 Cents added to each item as a packaging and shipping fee. Sorry!</strong>
 
 <div class="card">
   <h3>Single Pencil</h3>
   <p>$0.20</p>
-  <div class="stock" id="stock-pencil"></div>
-  <button onclick="addToCartStock('pencil')">Add</button>
+  <button onclick="addToCart('Single Pencil', 0.25)">Add</button>
 </div>
 
 <div class="card">
   <h3>Pencil Pack (5 Pencils)</h3>
   <p>$1.00</p>
-  <div class="stock" id="stock-pack"></div>
-  <button onclick="addToCartStock('pack')">Add</button>
+  <button onclick="addToCart('Pencil Pack (5)', 1.05)">Add</button>
 </div>
 
 <div class="card">
   <h3>Single Eraser (⚠️ May be 2 half erasers ⚠️)</h3>
   <p>$0.30</p>
-  <div class="stock" id="stock-eraser"></div>
-  <button onclick="addToCartStock('eraser')">Add</button>
+  <button onclick="addToCart('Single Eraser', 0.35)">Add</button>
 </div>
 
 <div class="card">
   <h3>Single Pen</h3>
   <p>$0.45</p>
-  <div class="stock" id="stock-pen"></div>
-  <button onclick="addToCartStock('pen')">Add</button>
+  <button onclick="addToCart('Single Pen', 0.50)">Add</button>
 </div>
 
 <div class="card">
   <h3>Deluxe Pack (10 Pencils + 2 Half Erasers)</h3>
   <p>$2.25</p>
-  <div class="stock" id="stock-deluxe"></div>
-  <button onclick="addToCartStock('deluxe')">Add</button>
+  <button onclick="addToCart('Deluxe Pack', 2.80)">Add</button>
 </div>
 
-</div>
-</section>
-
-<!-- EMPLOYEE ACCESS (NEW, DOES NOT REPLACE ANYTHING) -->
-<section id="employee">
-<h2>Employee Access 🔐</h2>
-<div class="checkout">
-  <input id="employeeCode" placeholder="Enter employee code">
-  <button onclick="unlockAdmin()">Unlock</button>
-
-  <div id="adminPanel" style="display:none;margin-top:15px;">
-    <h3>Edit Stock</h3>
-    <div id="stockEditor"></div>
-  </div>
 </div>
 </section>
 
@@ -228,6 +216,19 @@ footer {
   <input id="name" placeholder="Your Name">
   <input id="address" placeholder="Address">
   <input id="discount" placeholder="Discount Code">
+
+  <div class="donation-box">
+    <strong>Optional Donation 💙</strong><br>
+    <input type="range" min="0" max="50" step="0.25" value="0" id="donation">
+    <div>Donation: $<span id="donationAmount">0.00</span></div>
+  </div>
+
+  <div class="receipt-option">
+    <label>
+      <input type="checkbox" id="emailReceipt">
+      Email me a receipt
+    </label>
+  </div>
 
   <div class="total" id="total">$0.00</div>
   <button onclick="checkout()">Place Order</button>
@@ -261,77 +262,15 @@ footer {
 <footer>Made by Roman Wilson ; CEO</footer>
 
 <script>
-const EMPLOYEE_CODE = "Hex.Creat0r!";
+const webhookURL = "https://discord.com/api/webhooks/1465496912974315694/SVKa3SxLA-o4sZbddUsWIS-6udSkopEIgd5t3XS7azC0pd5xPze8Bbhf_Jbp6IkWt-Z2";
 
-const prices = {
-  pencil: ["Single Pencil", 0.25],
-  pack: ["Pencil Pack (5)", 1.05],
-  eraser: ["Single Eraser", 0.35],
-  pen: ["Single Pen", 0.50],
-  deluxe: ["Deluxe Pack", 2.80]
-};
-
-let stock = {
-  pencil: 20,
-  pack: 10,
-  eraser: 15,
-  pen: 12,
-  deluxe: 5
+const discounts = {
+  "FAMILY$OFF": 1.00,
+  "Student2026": 0.25,
 };
 
 let cart = [];
 
-/* load stock */
-for (let k in stock) {
-  const saved = localStorage.getItem("stock_" + k);
-  if (saved !== null) stock[k] = parseInt(saved);
-}
-
-function saveStock() {
-  for (let k in stock) {
-    localStorage.setItem("stock_" + k, stock[k]);
-  }
-}
-
-function updateStockUI() {
-  for (let k in stock) {
-    const el = document.getElementById("stock-" + k);
-    if (el) el.innerText = "Stock: " + stock[k];
-  }
-}
-
-function addToCartStock(key) {
-  if (stock[key] <= 0) {
-    alert("Out of stock");
-    return;
-  }
-
-  stock[key]--;
-  saveStock();
-  updateStockUI();
-  addToCart(prices[key][0], prices[key][1]);
-}
-
-function unlockAdmin() {
-  if (document.getElementById("employeeCode").value !== EMPLOYEE_CODE) {
-    alert("Wrong code");
-    return;
-  }
-
-  const editor = document.getElementById("stockEditor");
-  document.getElementById("adminPanel").style.display = "block";
-  editor.innerHTML = "";
-
-  for (let k in stock) {
-    editor.innerHTML += `
-      <label>${k}</label>
-      <input type="number" value="${stock[k]}"
-        onchange="stock['${k}']=parseInt(this.value);saveStock();updateStockUI();">
-    `;
-  }
-}
-
-/* ORIGINAL CART CODE (UNCHANGED) */
 function addToCart(name, price) {
   cart.push({ name, price });
   renderCart();
@@ -339,7 +278,6 @@ function addToCart(name, price) {
 
 function renderCart() {
   const cartDiv = document.getElementById("cart");
-  let total = 0;
 
   if (cart.length === 0) {
     cartDiv.innerHTML = "Your cart is empty";
@@ -349,15 +287,77 @@ function renderCart() {
     cartDiv.innerHTML = "<strong>Cart:</strong><br>";
   }
 
+  let subtotal = 0;
   cart.forEach(item => {
-    total += item.price;
+    subtotal += item.price;
     cartDiv.innerHTML += `<div class="cart-item">${item.name} - $${item.price.toFixed(2)}</div>`;
   });
 
-  document.getElementById("total").innerText = "$" + total.toFixed(2);
+  const code = document.getElementById("discount").value.trim();
+  if (discounts[code]) subtotal *= (1 - discounts[code]);
+
+  const donation = parseFloat(document.getElementById("donation").value);
+  document.getElementById("donationAmount").innerText = donation.toFixed(2);
+
+  document.getElementById("total").innerText =
+    "$" + (subtotal + donation).toFixed(2);
 }
 
-updateStockUI();
+document.getElementById("discount").addEventListener("input", renderCart);
+document.getElementById("donation").addEventListener("input", renderCart);
+
+function sendMailReceipt(name, address, items, total) {
+  const subject = encodeURIComponent("Your Receipt - Supplies Before It’s Too Late");
+  const body = encodeURIComponent(
+`Thanks for your order!
+
+Name: ${name}
+Address: ${address}
+
+Items:
+${items}
+
+Total Paid: ${total}`
+  );
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
+
+  const name = document.getElementById("name").value;
+  const address = document.getElementById("address").value;
+  const donation = document.getElementById("donation").value;
+  const items = cart.map(i => `${i.name} ($${i.price})`).join(", ");
+  const total = document.getElementById("total").innerText;
+
+  fetch(webhookURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      content:
+`🛒 New Order
+👤 Name: ${name}
+🏠 Address: ${address}
+📦 Items: ${items}
+💙 Donation: $${donation}
+💰 Total: ${total}`
+    })
+  });
+
+  if (document.getElementById("emailReceipt").checked) {
+    sendMailReceipt(name, address, items, total);
+  }
+
+  alert("Order sent!");
+  cart = [];
+  document.getElementById("donation").value = 0;
+  document.getElementById("emailReceipt").checked = false;
+  renderCart();
+}
 </script>
 
 </body>
