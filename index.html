@@ -150,6 +150,10 @@ footer {
   padding: 15px;
   font-style: italic;
 }
+
+/* EMPLOYEE ACCESS */
+#employee input { margin-bottom: 5px; }
+.stock-status { cursor: pointer; font-weight: bold; }
 </style>
 </head>
 
@@ -160,6 +164,7 @@ footer {
   <a href="#checkout">Checkout</a>
   <a href="#about">About Us</a>
   <a href="#price-compare">Price Compare</a>
+  <a href="#employee">Employee Access</a>
 </nav>
 
 <header>
@@ -173,35 +178,35 @@ footer {
 <h2>Products</h2>
 <div class="products">
 
-  <strong>hi 😀</strong>
+  <strong>5 Cents added to each item as a packaging and shipping fee. Sorry!</strong>
 
 <div class="card">
   <h3>Single Pencil</h3>
-  <p>$0.20</p>
+  <p>$0.20 - <span class="stock-status" data-item="Single Pencil">In Stock</span></p>
   <button onclick="addToCart('Single Pencil', 0.25)">Add</button>
 </div>
 
 <div class="card">
   <h3>Pencil Pack (5 Pencils)</h3>
-  <p>$1.00</p>
+  <p>$1.00 - <span class="stock-status" data-item="Pencil Pack (5)">In Stock</span></p>
   <button onclick="addToCart('Pencil Pack (5)', 1.05)">Add</button>
 </div>
 
 <div class="card">
   <h3>Single Eraser (⚠️ May be 2 half erasers ⚠️)</h3>
-  <p>$0.30</p>
+  <p>$0.30 - <span class="stock-status" data-item="Single Eraser">In Stock</span></p>
   <button onclick="addToCart('Single Eraser', 0.35)">Add</button>
 </div>
 
 <div class="card">
   <h3>Single Pen</h3>
-  <p>$0.45</p>
+  <p>$0.45 - <span class="stock-status" data-item="Single Pen">In Stock</span></p>
   <button onclick="addToCart('Single Pen', 0.50)">Add</button>
 </div>
 
 <div class="card">
   <h3>Deluxe Pack (10 Pencils + 2 Half Erasers)</h3>
-  <p>$2.25</p>
+  <p>$2.25 - <span class="stock-status" data-item="Deluxe Pack">In Stock</span></p>
   <button onclick="addToCart('Deluxe Pack', 2.80)">Add</button>
 </div>
 
@@ -259,6 +264,14 @@ footer {
 </div>
 </section>
 
+<section id="employee">
+<h2>Employee Access</h2>
+<div class="checkout">
+  <input id="employeeCode" placeholder="Enter Employee Code">
+  <p id="employeeMsg" style="color: green; font-weight: bold;"></p>
+</div>
+</section>
+
 <footer>Made by Roman Wilson ; CEO</footer>
 
 <script>
@@ -270,8 +283,15 @@ const discounts = {
 };
 
 let cart = [];
+let employeeMode = false;
 
 function addToCart(name, price) {
+  const statusEl = document.querySelector(`.stock-status[data-item='${name}']`);
+  if (statusEl && statusEl.innerText === "Out of Stock") {
+    alert(`${name} is out of stock!`);
+    return;
+  }
+
   cart.push({ name, price });
   renderCart();
 }
@@ -358,6 +378,25 @@ function checkout() {
   document.getElementById("emailReceipt").checked = false;
   renderCart();
 }
+
+// EMPLOYEE ACCESS
+document.getElementById("employeeCode").addEventListener("input", function() {
+  const code = this.value.trim();
+  if (code === "Hex.Creat0r!") {
+    employeeMode = true;
+    document.getElementById("employeeMsg").innerText = "Employee Mode Activated! Click stock to toggle.";
+  } else {
+    employeeMode = false;
+    document.getElementById("employeeMsg").innerText = "";
+  }
+});
+
+document.querySelectorAll(".stock-status").forEach(el => {
+  el.addEventListener("click", function() {
+    if (!employeeMode) return;
+    this.innerText = this.innerText === "In Stock" ? "Out of Stock" : "In Stock";
+  });
+});
 </script>
 
 </body>
